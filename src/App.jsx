@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import Login from "./pages/Login";
@@ -9,40 +8,51 @@ import Student from "./pages/Student";
 import Cakes from "./components/Cakes";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
   return (
-    <div>
-      {/* <PrivateRoute>  */}
-      <Router>
-        <AuthProvider>
-          <Provider store={store}>
-            <Routes>
-              <Route
-                exact
-                path="/teacher"
-                element={
-                  // <PrivateRoute>
+    <Provider store={store}>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path="/teacher"
+              element={
+                <PrivateRoute>
                   <Teacher />
-                  // </PrivateRoute>
-                }
-              />
-              <Route path="/" element={<Login />} />
-              <Route exact path="/student" element={<Student />} />
-              <Route exact path="/cakes" element={<Cakes />} />
-              <Route
-                path="/profile"
-                element={
-                  // <PrivateRoute>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/student"
+              element={
+                <PrivateRoute>
+                  <Student />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/cakes"
+              element={
+                <PrivateRoute>
+                  <Cakes />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
                   <Profile />
-                  // </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Provider>
-        </AuthProvider>
-      </Router>
-    </div>
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </Provider>
   );
 };
 

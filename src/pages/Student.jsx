@@ -1,21 +1,34 @@
+// src/pages/Students.jsx
 import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
 import axios from "axios";
 import { Button, Input, Modal, Table, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+// import {
+//   getStudents,
+//   addStudent,
+//   updateStudent,
+//   deleteStudent,
+// } from "../redux/actions";
 import {
-  getStudents,
+  setStudents,
   addStudent,
   updateStudent,
   deleteStudent,
-} from "../redux/actions";
+} from "../redux/studentSlice";
+import { toast } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Student = () => {
   const [searchStudent, setSearchStudent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    group: "",
+  });
   // const [items, setItems] = useState([]);
   // const { register, control, handleSubmit, reset } = useForm();
 
@@ -25,15 +38,15 @@ const Student = () => {
   const { control, handleSubmit, reset } = useForm();
 
   useEffect(() => {
-    // axios
-    //   .get("http://localhost:3000/students")
-    //   .then((res) => {
-    //     setItems(res.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("There was an error fetching the data!", error);
-    //   });
-    dispatch(getStudents());
+    axios
+      .get("http://localhost:3000/students")
+      .then((res) => {
+        dispatch(setItems(res.data));
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the data!", error);
+      });
+    // dispatch(getStudents());
   }, [dispatch]);
 
   const handleSearchStudent = (e) => {
@@ -66,7 +79,7 @@ const Student = () => {
       //   });
       dispatch(updateStudent(editItem.id, data));
       message.success("Student updated successfully");
-      setEditItem(null);
+      // setEditItem(null);
     } else {
       // axios
       //   .post("http://localhost:3000/students", data)
