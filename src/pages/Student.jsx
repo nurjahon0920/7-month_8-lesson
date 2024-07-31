@@ -2,66 +2,84 @@ import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
 import axios from "axios";
 import { Button, Input, Modal, Table, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import {
+  getStudents,
+  addStudent,
+  updateStudent,
+  deleteStudent,
+} from "../redux/actions";
 
 const Student = () => {
-  const [items, setItems] = useState([]);
-  const { register, control, handleSubmit, reset } = useForm();
   const [searchStudent, setSearchStudent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
+  // const [items, setItems] = useState([]);
+  // const { register, control, handleSubmit, reset } = useForm();
+
+  const dispatch = useDispatch();
+  const students = useSelector((state) => state.student.students);
+
+  const { control, handleSubmit, reset } = useForm();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/students")
-      .then((res) => {
-        setItems(res.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the data!", error);
-      });
-  }, []);
+    // axios
+    //   .get("http://localhost:3000/students")
+    //   .then((res) => {
+    //     setItems(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("There was an error fetching the data!", error);
+    //   });
+    dispatch(getStudents());
+  }, [dispatch]);
 
   const handleSearchStudent = (e) => {
     setSearchStudent(e.target.value.toLowerCase());
   };
 
-  const filteredData = items.filter((item) => {
+  const filteredData = students.filter((student) => {
     return (
-      item.firstName.toLowerCase().includes(searchStudent) ||
-      item.lastName.toLowerCase().includes(searchStudent) ||
-      item.group.toLowerCase().includes(searchStudent)
+      student.firstName.toLowerCase().includes(searchStudent) ||
+      student.lastName.toLowerCase().includes(searchStudent) ||
+      student.group.toLowerCase().includes(searchStudent)
     );
   });
 
   const onSubmit = (data) => {
     if (editItem) {
-      axios
-        .put(`http://localhost:3000/students/${editItem.id}`, data)
-        .then((res) => {
-          const updatedItems = items.map((item) =>
-            item.id === editItem.id ? res.data : item
-          );
-          setItems(updatedItems);
-          message.success("Student updated successfully");
-          setEditItem(null);
-        })
-        .catch((error) => {
-          console.error("There was an error updating the Student!", error);
-          message.error("Failed to update Student");
-        });
+      // axios
+      //   .put(`http://localhost:3000/students/${editItem.id}`, data)
+      //   .then((res) => {
+      //     const updatedItems = items.map((item) =>
+      //       item.id === editItem.id ? res.data : item
+      //     );
+      //     setItems(updatedItems);
+      //     message.success("Student updated successfully");
+      //     setEditItem(null);
+      //   })
+      //   .catch((error) => {
+      //     console.error("There was an error updating the Student!", error);
+      //     message.error("Failed to update Student");
+      //   });
+      dispatch(updateStudent(editItem.id, data));
+      message.success("Student updated successfully");
+      setEditItem(null);
     } else {
-      axios
-        .post("http://localhost:3000/students", data)
-        .then((res) => {
-          setItems([...items, res.data]);
-          message.success("Student added successfully");
-        })
-        .catch((error) => {
-          console.error("There was an error adding the Student!", error);
-          message.error("Failed to add Student");
-        });
+      // axios
+      //   .post("http://localhost:3000/students", data)
+      //   .then((res) => {
+      //     setItems([...items, res.data]);
+      //     message.success("Student added successfully");
+      //   })
+      //   .catch((error) => {
+      //     console.error("There was an error adding the Student!", error);
+      //     message.error("Failed to add Student");
+      //   });
+      dispatch(addStudent(data));
+      message.success("Student added successfully");
     }
     reset();
     setIsModalOpen(false);
@@ -74,17 +92,19 @@ const Student = () => {
   };
 
   const deleteItem = (id) => {
-    axios
-      .delete(`http://localhost:3000/students/${id}`)
-      .then(() => {
-        const updatedItems = items.filter((item) => item.id !== id);
-        setItems(updatedItems);
-        message.success("Student deleted successfully");
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the Student!", error);
-        message.error("Failed to delete Student");
-      });
+    // axios
+    //   .delete(`http://localhost:3000/students/${id}`)
+    //   .then(() => {
+    //     const updatedItems = items.filter((item) => item.id !== id);
+    //     setItems(updatedItems);
+    //     message.success("Student deleted successfully");
+    //   })
+    //   .catch((error) => {
+    //     console.error("There was an error deleting the Student!", error);
+    //     message.error("Failed to delete Student");
+    //   });
+    dispatch(deleteStudent(id));
+    message.success("Student deleted successfully");
   };
 
   const showModal = () => {

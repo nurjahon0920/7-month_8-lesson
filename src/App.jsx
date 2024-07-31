@@ -6,38 +6,40 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Teacher from "./pages/Teacher";
 import Student from "./pages/Student";
+import Cakes from "./components/Cakes";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const App = () => {
   return (
     <div>
-      <header className="App-header">
-        <h1>School Management System</h1>
-      </header>
-      <hr />
-      {/* <PrivateRoute> */}
-
+      {/* <PrivateRoute>  */}
       <Router>
         <AuthProvider>
-          <Routes>
-            <Route
-              path="/teacher"
-              element={
-                // <PrivateRoute>
-                <Teacher />
-                /* </PrivateRoute> */
-              }
-            />
-            <Route path="/" element={<Login />} />
-            <Route path="/student" element={<Student />} />
-            <Route
-              path="/profile"
-              element={
-                // <PrivateRoute>
-                <Profile />
-                // </PrivateRoute>
-              }
-            />
-          </Routes>
+          <Provider store={store}>
+            <Routes>
+              <Route
+                exact
+                path="/teacher"
+                element={
+                  // <PrivateRoute>
+                  <Teacher />
+                  // </PrivateRoute>
+                }
+              />
+              <Route path="/" element={<Login />} />
+              <Route exact path="/student" element={<Student />} />
+              <Route exact path="/cakes" element={<Cakes />} />
+              <Route
+                path="/profile"
+                element={
+                  // <PrivateRoute>
+                  <Profile />
+                  // </PrivateRoute>
+                }
+              />
+            </Routes>
+          </Provider>
         </AuthProvider>
       </Router>
     </div>

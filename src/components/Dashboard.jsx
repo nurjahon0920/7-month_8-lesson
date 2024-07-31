@@ -5,7 +5,7 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -50,22 +50,30 @@ const Dashboard = () => {
             defaultSelectedKeys={["1"]}
             style={{ paddingTop: "50px" }}>
             <>
-              <Link to="/teacher" style={{ color: "#F5F5F5" }}>
+              <NavLink to="/teacher" style={{ color: "#F5F5F5" }}>
                 <ListItemButton>
                   <ListItemIcon>
                     <PeopleIcon color="primary" />
                   </ListItemIcon>
                   <ListItemText primary="Teachers" />
                 </ListItemButton>
-              </Link>
-              <Link to="/student" style={{ color: "#F5F5F5" }}>
+              </NavLink>
+              <NavLink to="/student" style={{ color: "#F5F5F5" }}>
                 <ListItemButton>
                   <ListItemIcon>
                     <PeopleIcon color="primary" />
                   </ListItemIcon>
                   <ListItemText primary="Students" />
                 </ListItemButton>
-              </Link>
+              </NavLink>
+              <NavLink to="/cakes" style={{ color: "#F5F5F5" }}>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <PeopleIcon color="primary" />
+                  </ListItemIcon>
+                  <ListItemText primary="Cakes" />
+                </ListItemButton>
+              </NavLink>
             </>
           </Menu>
         </Sider>
@@ -90,11 +98,11 @@ const Dashboard = () => {
                 height: 64,
               }}
             />
-            <Link to="/profile" style={{ paddingTop: "10px" }}>
+            <NavLink to="/profile" style={{ paddingTop: "10px" }}>
               <Badge count={items.length}>
                 <UserOutlined style={{ fontSize: "24px", color: "#1890ff" }} />
               </Badge>
-            </Link>
+            </NavLink>
           </Header>
         </Layout>
       </Layout>
